@@ -134,9 +134,7 @@ function Hero({ voice, onBook, shakeEnabled }){
     setShake(true);
     setTimeout(() => { setShake(false); onBook(); }, 650);
   };
-  const headline = voice === "serious"
-    ? <>Professional <em>controlled demolition</em>, finished in under five weeks.</>
-    : <>We turn buildings into <em>breathing&nbsp;room</em>.</>;
+  const headline = <>Demolition is our <em>mission</em>.</>;
   const sub = voice === "serious"
     ? "Big Burst plans, executes, and clears controlled demolition on any property — residential, commercial, or industrial — in under five weeks. We also sell commercial-grade explosives, priced below the rest of the market."
     : "Professional explosions. Any property. Done in under five weeks — and cheaper than whatever you've been quoted. Hover anything below for our number.";
