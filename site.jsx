@@ -1,12 +1,5 @@
-/* global React, ReactDOM, useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakToggle, TweakColor, TweakSlider, TweakText */
+/* global React, ReactDOM */
 const { useState, useEffect, useRef } = React;
-
-/* ---------------- Tweaks defaults ---------------- */
-const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "palette": "classic",
-  "voice": "cheeky",
-  "showShake": true
-}/*EDITMODE-END*/;
 
 /* ---------------- Palettes ---------------- */
 const PALETTES = {
@@ -80,29 +73,56 @@ const Plunger = ({ size = 18 }) => (
 /* ---------------- NAV ---------------- */
 function Nav({ onBook }){
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => {
     const f = () => setScrolled(window.scrollY > 20);
     f(); window.addEventListener("scroll", f, {passive:true});
     return () => window.removeEventListener("scroll", f);
   }, []);
+  const close = () => setMenuOpen(false);
   return (
-    <nav className={cls("nav", scrolled && "nav--scrolled")}>
-      <a href="#top" className="nav__brand">
-        <BurstMark size={44} />
-        <span className="nav__wordmark">Big&nbsp;Burst</span>
-      </a>
-      <div className="nav__links">
-        <a href="#what">What we do</a>
-        <a href="#properties">Properties</a>
-        <a href="#shop">Shop</a>
-        <a href="#about">About</a>
-        <a href="#faq">Q&amp;A</a>
-      </div>
-      <button className="btn btn--primary nav__cta" onClick={onBook}>
-        <Plunger size={16} />
-        <span>Schedule a demolition</span>
-      </button>
-    </nav>
+    <>
+      <nav className={cls("nav", scrolled && "nav--scrolled")}>
+        <a href="#top" className="nav__brand" onClick={close}>
+          <BurstMark size={44} />
+          <span className="nav__wordmark">Big&nbsp;Burst</span>
+        </a>
+        <div className="nav__links">
+          <a href="#what" onClick={close}>What we do</a>
+          <a href="#properties" onClick={close}>Properties</a>
+          <a href="#shop" onClick={close}>Shop</a>
+          <a href="#about" onClick={close}>About</a>
+          <a href="#faq" onClick={close}>Q&amp;A</a>
+        </div>
+        <div className="nav__right">
+          <button className="btn btn--primary nav__cta" onClick={onBook}>
+            <Plunger size={16} />
+            <span>Schedule a demolition</span>
+          </button>
+          <button
+            className={cls("nav__burger", menuOpen && "nav__burger--open")}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen(m => !m)}
+          >
+            <span /><span /><span />
+          </button>
+        </div>
+      </nav>
+      {menuOpen && (
+        <div className="nav__mobile-menu">
+          <a href="#what" onClick={close}>What we do</a>
+          <a href="#properties" onClick={close}>Properties</a>
+          <a href="#shop" onClick={close}>Shop</a>
+          <a href="#about" onClick={close}>About</a>
+          <a href="#faq" onClick={close}>Q&amp;A</a>
+          <button className="btn btn--primary btn--xl" style={{width:"100%",justifyContent:"center"}}
+            onClick={() => { close(); onBook(); }}>
+            <Plunger size={18}/> Schedule a demolition
+          </button>
+        </div>
+      )}
+    </>
   );
 }
 
@@ -470,6 +490,10 @@ function Booking({ open, onClose, voice }){
 
   const onSubmit = (e) => {
     e.preventDefault();
+    const body =
+      `Dear Big Burst Team,\n\nI am writing to schedule a demolition for my property. Below are my details:\n\nYour name: ${data.name}\n\nEmail: ${data.email}\n\nPhone (optional): ${data.phone || "—"}\n\nSite address: ${data.site}\n\nWhat needs to come down?: ${data.structure}\n\nAnything else we should know? (optional): ${data.notes || "—"}\n\n\nI look forward to hearing from you soon.\n\nBest regards`;
+    const mailto = `mailto:mr.petrit.luci@gmail.com?subject=${encodeURIComponent("New Demolition Schedule Request")}&body=${encodeURIComponent(body)}`;
+    window.open(mailto, "_blank");
     setSubmitted(true);
   };
 
@@ -661,11 +685,10 @@ function Footer(){
 
 /* ---------------- ROOT ---------------- */
 function App(){
-  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
   const [booking, setBooking] = useState(false);
 
   useEffect(() => {
-    const p = PALETTES[t.palette] || PALETTES.classic;
+    const p = PALETTES.blueprint;
     const r = document.documentElement.style;
     r.setProperty("--orange", p.orange);
     r.setProperty("--yellow", p.yellow);
@@ -674,12 +697,12 @@ function App(){
     r.setProperty("--paper",  p.paper);
     r.setProperty("--red",    p.red);
     r.setProperty("--ink",    p.ink);
-  }, [t.palette]);
+  }, []);
 
   return (
     <>
       <Nav onBook={() => setBooking(true)} />
-      <Hero voice={t.voice} shakeEnabled={t.showShake} onBook={() => setBooking(true)} />
+      <Hero voice="serious" shakeEnabled={false} onBook={() => setBooking(true)} />
       <ValueStrip />
       <WhatWeDo />
       <Properties />
@@ -690,31 +713,7 @@ function App(){
       <BigCTA onBook={() => setBooking(true)} />
       <FAQ />
       <Footer />
-
-      <Booking open={booking} onClose={() => setBooking(false)} voice={t.voice} />
-
-      <TweaksPanel title="Tweaks">
-        <TweakSection title="Look">
-          <TweakRadio label="Palette" value={t.palette}
-            options={[
-              {value:"classic", label:"Classic Boom"},
-              {value:"dusk", label:"Dust Dusk"},
-              {value:"blueprint", label:"Blueprint"},
-            ]}
-            onChange={v => setTweak("palette", v)} />
-        </TweakSection>
-        <TweakSection title="Voice">
-          <TweakRadio label="Copy tone" value={t.voice}
-            options={[
-              {value:"cheeky", label:"Cheeky"},
-              {value:"serious", label:"Serious"},
-            ]}
-            onChange={v => setTweak("voice", v)} />
-        </TweakSection>
-        <TweakSection title="Behavior">
-          <TweakToggle label="Plunger shakes the screen" value={t.showShake} onChange={v => setTweak("showShake", v)} />
-        </TweakSection>
-      </TweaksPanel>
+      <Booking open={booking} onClose={() => setBooking(false)} voice="serious" />
     </>
   );
 }
