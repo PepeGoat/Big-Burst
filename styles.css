@@ -365,6 +365,20 @@ a { color: inherit; text-decoration: none; }
   text-stroke: 2px var(--ink);
 }
 
+/* ========= HOODIE BANNER ========= */
+.hoodie-banner {
+  width: 100%;
+  border-top: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  overflow: hidden;
+  line-height: 0;
+}
+.hoodie-banner__img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
 /* ========= SHOP (EXPLOSIVES) ========= */
 .shop-grid {
   display: grid;

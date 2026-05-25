@@ -91,6 +91,7 @@ function Nav({ onBook }){
           <a href="#what" onClick={close}>What we do</a>
           <a href="#properties" onClick={close}>Properties</a>
           <a href="#shop" onClick={close}>Shop</a>
+          <a href="#merch" onClick={close}>Merch</a>
           <a href="#about" onClick={close}>About</a>
           <a href="#faq" onClick={close}>Q&amp;A</a>
         </div>
@@ -114,6 +115,7 @@ function Nav({ onBook }){
           <a href="#what" onClick={close}>What we do</a>
           <a href="#properties" onClick={close}>Properties</a>
           <a href="#shop" onClick={close}>Shop</a>
+          <a href="#merch" onClick={close}>Merch</a>
           <a href="#about" onClick={close}>About</a>
           <a href="#faq" onClick={close}>Q&amp;A</a>
           <button className="btn btn--primary btn--xl" style={{width:"100%",justifyContent:"center"}}
@@ -262,6 +264,19 @@ function Tagline(){
           <span className="tagline__boom">WE GO BOOM.</span>
         </div>
       </div>
+    </section>
+  );
+}
+
+/* ---------------- HOODIE BANNER (MERCH) ---------------- */
+function HoodieBanner(){
+  return (
+    <section id="merch" className="hoodie-banner">
+      <img
+        src="assets/hoodie-promo.png"
+        alt="Big Burst hoodies — For sale 10% off until May 30th"
+        className="hoodie-banner__img"
+      />
     </section>
   );
 }
@@ -705,6 +720,7 @@ function App(){
       <WhatWeDo />
       <Properties />
       <Tagline />
+      <HoodieBanner />
       <Shop />
       <Timeline />
       <About onBook={() => setBooking(true)} />
