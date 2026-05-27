@@ -367,16 +367,30 @@ a { color: inherit; text-decoration: none; }
 
 /* ========= HOODIE BANNER ========= */
 .hoodie-banner {
-  width: 100%;
+  background: var(--cream);
   border-top: 2px solid var(--ink);
   border-bottom: 2px solid var(--ink);
+  padding: 56px 28px;
+}
+.hoodie-banner__frame {
+  max-width: var(--max);
+  margin: 0 auto;
+  border: 3px solid var(--ink);
+  border-radius: 28px;
   overflow: hidden;
+  box-shadow: 10px 10px 0 var(--ink);
   line-height: 0;
 }
 .hoodie-banner__img {
   width: 100%;
   display: block;
   object-fit: cover;
+  border-radius: 25px;
+}
+@media (max-width: 600px) {
+  .hoodie-banner { padding: 36px 18px; }
+  .hoodie-banner__frame { border-radius: 18px; box-shadow: 6px 6px 0 var(--ink); }
+  .hoodie-banner__img { border-radius: 15px; }
 }
 
 /* ========= SHOP (EXPLOSIVES) ========= */

@@ -272,11 +272,13 @@ function Tagline(){
 function HoodieBanner(){
   return (
     <section id="merch" className="hoodie-banner">
-      <img
-        src="assets/hoodie-promo.png"
-        alt="Big Burst hoodies — For sale 10% off until May 30th"
-        className="hoodie-banner__img"
-      />
+      <div className="hoodie-banner__frame">
+        <img
+          src="assets/hoodie-promo.png"
+          alt="Big Burst hoodies — For sale 10% off until May 30th"
+          className="hoodie-banner__img"
+        />
+      </div>
     </section>
   );
 }
